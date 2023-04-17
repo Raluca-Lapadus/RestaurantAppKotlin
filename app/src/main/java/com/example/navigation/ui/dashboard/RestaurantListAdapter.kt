@@ -45,10 +45,6 @@ class RestaurantListAdapter(
                 toggleStrikeThrough(tvRestaurantTitlee, isChecked)
                 curRestaurant.isChecked = !curRestaurant.isChecked
             }
-            btnToPhotoRestaurant.setOnClickListener {
-                //cameraCheckPermission()
-                //camera()
-            }
         }
     }
 
@@ -59,13 +55,6 @@ class RestaurantListAdapter(
             tvRestaurantTitle.paintFlags = tvRestaurantTitle.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
-
-//    private fun camera() {
-//
-//        val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//        callback.onTakePicture()
-//    }
-
 
     override fun getItemCount(): Int {
         return restaurantsList.size

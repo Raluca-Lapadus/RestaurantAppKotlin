@@ -1,7 +1,14 @@
 package com.example.navigation
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.Settings
 import android.widget.MediaController
 import android.widget.Toast
 import android.widget.VideoView
@@ -12,12 +19,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.navigation.databinding.ActivityMainBinding
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-//    private var myVideoView: VideoView? = null
-//    private var myMediaController: MediaController? = null
+    private val CAMERA_REQUEST_CODE = 100
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        this.myVideoView = binding.myVideoView
 
         val navView: BottomNavigationView = binding.navView
 
@@ -40,28 +51,67 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-//        setUpVideoPlayer()
+        binding.btnPictureRestaurant.setOnClickListener {
+            //cameraCheckPermission()
+            camera()
+        }
+
     }
 
-//    private fun setUpVideoPlayer() {
-//        if(myMediaController == null) {
-//            myMediaController = MediaController(this)
-//            myMediaController!!.setAnchorView(this.myVideoView)
-//        }
-//        myVideoView!!.setMediaController(myMediaController)
-//
-//        myVideoView!!.setVideoURI(Uri.parse("android.resource://"
-//        + packageName + "/" + R.raw.vikings))
-//
-//        myVideoView!!.requestFocus()
-//        myVideoView!!.pause()
-//        myVideoView!!.setOnCompletionListener {
-//            Toast.makeText(applicationContext, "Video completed", Toast.LENGTH_SHORT).show()
-//            true
-//        }
-//        myVideoView!!.setOnErrorListener{mp, what, extra ->
-//            Toast.makeText(applicationContext, "error", Toast.LENGTH_SHORT).show()
-//            false
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+            val image = data?.extras?.get("data") as Bitmap
+
+            // Do something with the image, such as displaying it in an ImageView
+            binding.imageView.setImageBitmap(image)
+        }
+    }
+
+    private fun cameraCheckPermission() {
+        Dexter.withContext(this)
+            .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA).withListener(
+                object: MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        report?.let {
+                            if(report.areAllPermissionsGranted()) {
+                                camera()
+                            }
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        p0: MutableList<PermissionRequest>?,
+                        p1: PermissionToken?
+                    ) {
+                        showRorationalDialogForPermission()
+                    }
+                }
+            ).onSameThread().check()
+    }
+
+    private fun showRorationalDialogForPermission() {
+        AlertDialog.Builder(this).setMessage("off permission").setPositiveButton("go seetings"){ _, _->
+            try {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }
+            catch (e: ActivityNotFoundException){
+                e.printStackTrace()
+            }
+        }
+            .setNegativeButton("CANCEL"){dialog, _->
+                dialog.dismiss()
+            }.show()
+    }
+
+
+    private fun camera() {
+        val intent  = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA_REQUEST_CODE)
+    }
+
 }
