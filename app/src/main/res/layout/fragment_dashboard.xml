@@ -9,8 +9,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRestaurantTitle"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="200dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="72dp"
         app:layout_constraintBottom_toTopOf="@+id/btnToAddRestaurant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -46,14 +46,14 @@
         app:layout_constraintHorizontal_bias="0.59"
         app:layout_constraintStart_toEndOf="@+id/etRestaurantTitle" />
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/rvRestaurantTitle"
-        tools:layout_editor_absoluteX="0dp" />
+<!--    <TextView-->
+<!--        android:id="@+id/text_dashboard"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="56dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="40sp"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/rvRestaurantTitle"-->
+<!--        tools:layout_editor_absoluteX="0dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
