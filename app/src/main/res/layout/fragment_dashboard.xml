@@ -8,12 +8,22 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRestaurantTitle"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_width="405dp"
+        android:layout_height="318dp"
         android:layout_marginBottom="72dp"
         app:layout_constraintBottom_toTopOf="@+id/btnToAddRestaurant"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="252dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="24dp"
+        android:queryHint="Search Here.."
+        app:layout_constraintBottom_toTopOf="@+id/btnToAddRestaurant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -48,10 +49,24 @@ class DashboardFragment : Fragment() {
         binding.btnToDeleteRestaurant.setOnClickListener {
             listAdapter.deleteRestaurant()
         }
+//        binding.searchView.isFocusable = true
+//        binding.searchView.clearFocus()
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Handle query submit
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String): Boolean {
+                // Handle query text change
+                listAdapter.filterList(newText)
+                return true
+            }
+        })
 
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

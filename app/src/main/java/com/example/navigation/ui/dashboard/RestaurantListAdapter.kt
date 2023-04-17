@@ -6,11 +6,12 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.navigation.databinding.RestaurantItemBinding
 
 class RestaurantListAdapter(
-    private val restaurantsList: MutableList<RestaurantItem>,
+    private var restaurantsList: MutableList<RestaurantItem>,
     private val context: Context
 ) : RecyclerView.Adapter<RestaurantListAdapter.RestaurantsListViewHolder>() {
 
@@ -30,6 +31,26 @@ class RestaurantListAdapter(
         restaurantsList.removeAll { restaurant ->
             restaurant.isChecked
         }
+        notifyDataSetChanged()
+    }
+
+    fun filterList(newText: String) {
+        val list = mutableListOf<RestaurantItem>()
+        for ( item in restaurantsList) {
+            if(item.title.toLowerCase().contains(newText.toLowerCase())){
+                list.add(item)
+            }
+        }
+        if(list.isEmpty()){
+            Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            setFilteredList(list)
+        }
+    }
+
+    fun setFilteredList(filteredList: MutableList<RestaurantItem>) {
+        this.restaurantsList = filteredList
         notifyDataSetChanged()
     }
 
