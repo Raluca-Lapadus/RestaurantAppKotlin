@@ -1,19 +1,17 @@
 package com.example.navigation.ui.dashboard
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.navigation.databinding.ActivityMainBinding
-import com.example.navigation.databinding.FragmentDashboardBinding
 import com.example.navigation.databinding.RestaurantItemBinding
 
 class RestaurantListAdapter(
     private val restaurantsList: MutableList<RestaurantItem>,
-
+    private val context: Context
 ) : RecyclerView.Adapter<RestaurantListAdapter.RestaurantsListViewHolder>() {
 
     class RestaurantsListViewHolder(val binding: RestaurantItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -44,6 +42,16 @@ class RestaurantListAdapter(
             cbDone.setOnCheckedChangeListener { _, isChecked ->
                 toggleStrikeThrough(tvRestaurantTitlee, isChecked)
                 curRestaurant.isChecked = !curRestaurant.isChecked
+            }
+            btnShare?.setOnClickListener {
+                val sendIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "This restaurant called ${curRestaurant.title} is my favorite")
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, "Share message via")
+                context.startActivity(shareIntent)
             }
         }
     }
