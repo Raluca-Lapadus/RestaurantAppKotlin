@@ -2,11 +2,12 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 
 android {
     namespace 'com.example.navigation'
-    compileSdk 33
+    compileSdk 34
 
     viewBinding.enabled = true
 
@@ -16,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.navigation"
-        minSdk 24
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -40,10 +41,14 @@ android {
     buildFeatures {
         viewBinding true
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
-
+    implementation 'com.google.firebase:firebase-auth:21.0.0'
+    implementation 'com.android.car.ui:car-ui-lib:2.6.0'
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.3"
     def kotlin_version="1.8.0"
